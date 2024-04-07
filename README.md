@@ -1,18 +1,20 @@
-## Getting Started
+# Mini-Project 7: Blockchains
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+https://github.com/tyu012/mp7-blockchains
 
-## Folder Structure
+## Purpose
 
-The workspace contains two folders by default, where:
+Practicing working with linked structures by developing our own simple implementation of blockchains 
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
+## Authors
 
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
+Keely Miyamoto, Nye Tenerelli, Tim Yu
 
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
+## Acknowledgements
 
-## Dependency Management
+Java® Platform, Standard Edition & Java Development Kit
+Version 17 API Specification
+https://docs.oracle.com/en/java/javase/17/docs/api/
 
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+Mini-Project 7 instructions:
+https://rebelsky.cs.grinnell.edu/Courses/CSC207/2024Sp/mps/mp07.html
