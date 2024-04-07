@@ -78,7 +78,7 @@ public class Block {
         this.hash = hashCandidate;
       }
     }
-  }
+  } // Block(int, int, Hash)
 
   /**
    * Creates a new block from the specified parameters, using the provided nonce and additional
@@ -87,7 +87,7 @@ public class Block {
    */
   public Block(int num, int amount, Hash prevHash, long nonce) {
     // STUB
-  }
+  } // Block(int, int, Hash, long)
 
   // +----------------+
   // | Public methods |
@@ -98,35 +98,35 @@ public class Block {
    */
   public int getNum() {
     return this.num;
-  }
+  } // getNum();
 
   /**
    * Returns the amount transferred that is recorded in this block.
    */
   public int getAmount() {
     return this.data;
-  }
+  } // getAmount()
 
   /**
    * Returns the nonce of this block.
    */
   public long getNonce() {
     return this.nonce;
-  }
+  } // getNonce()
 
   /**
    * Returns the hash of the previous block in the blockchain.
    */
   public Hash getPrevHash() {
     return this.prevHash;
-  }
+  } // getPrevHash()
 
   /**
    * Returns the hash of this block.
    */
   public Hash getHash() {
     return this.hash;
-  }
+  } // getHash()
 
   /**
    * Returns a string representation of this block.
@@ -134,5 +134,6 @@ public class Block {
   public String toString() {
     return "Block " + getNum() + " (Amount: " + getAmount() + ", Nonce: " + getNonce()
         + ", prevHash: " + getPrevHash() + ", hash: " + getHash() + ")";
-  }
-}
+  } // toString()
+
+} // class Block

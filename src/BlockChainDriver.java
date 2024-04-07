@@ -1,5 +1,5 @@
 /**
- * INSERT MESSAGE HERE
+ * User-facing program to interact with BlockChain.
  * 
  * @author Tim Yu
  * @author Nye Tenerelli
@@ -7,4 +7,4 @@
  */
 public class BlockChainDriver {
   
-}
+} // class BlockChainDriver

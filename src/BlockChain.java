@@ -1,5 +1,5 @@
 /**
- * INSERT MESSAGE HERE
+ * A singly-linked structure with pointers to first and last Blocks.
  * 
  * @author Tim Yu
  * @author Nye Tenerelli
@@ -7,4 +7,4 @@
  */
 public class BlockChain {
   
-}
+} // class BlockChain
