@@ -83,7 +83,16 @@ public class BlockChain {
     return mover.val.getHash();
   }
 //     boolean isValidBlockChain(): walks the blockchain and ensures that its blocks are consistent (the balances are legal) and valid (as in append).
-
+public boolean isValidBlockChain()  {
+  Node mover = arr.next();
+  while (mover != null) {
+    if (!(blk.getPrevHash().equals(getHash()))) {
+      return true;
+    }
+    mover = mover.next;
+  }
+  return true;
+}
 //     void printBalances(PrintWriter pen): prints Alexis’s and Blake’s respective balances in the form Alexis: <amt>, Blake: <amt> on a single line, e.g., Alexis: 300, Blake: 0.
   public void getBalance()  {
     int balance = 0;
