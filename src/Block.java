@@ -59,23 +59,16 @@ public class Block {
     // Mine for the block by looping through all possible long values
     for (long nonceCandidate = Long.MIN_VALUE; nonceCandidate <= Long.MAX_VALUE; nonceCandidate++) {
       // Convert nonce candidate into byte array
-      byte[] nonceCandidateBytes = ByteBuffer.allocate(Long.BYTES).putInt(num).array();
+      Hash hashCandidate = generateHash(numBytes, dataBytes, prevHashBytes, nonceCandidate, md);
 
-      md.update(numBytes);
-      md.update(dataBytes);
-      md.update(prevHashBytes);
-      md.update(nonceCandidateBytes);
-
-      byte[] hashBytes = md.digest();
-
-      Hash hashCandidate = new Hash(hashBytes);
-
+      // Check validity of hash candidate
       if (hashCandidate.isValid()) {
         this.num = num;
         this.data = amount;
         this.prevHash = prevHash;
         this.nonce = nonceCandidate;
         this.hash = hashCandidate;
+        return;
       }
     }
   } // Block(int, int, Hash)
@@ -86,7 +79,6 @@ public class Block {
    * does not need to perform the mining operation; it can compute the hash directly.
    */
   public Block(int num, int amount, Hash prevHash, long nonce) {
-    // STUB
   } // Block(int, int, Hash, long)
 
   // +----------------+
@@ -135,5 +127,31 @@ public class Block {
     return "Block " + getNum() + " (Amount: " + getAmount() + ", Nonce: " + getNonce()
         + ", prevHash: " + getPrevHash() + ", hash: " + getHash() + ")";
   } // toString()
+
+  // +----------------+
+  // | Helper methods |
+  // +----------------+-----------------------------------------------------------------------------
+  
+  /**
+   * Generates a hash from byte arrays of number, data, previous hash, and a long nonce
+   * using a MessageDigest instance.
+   */
+  static Hash generateHash(byte[] numBytes, byte[] dataBytes, byte[] prevHashBytes, long nonce,
+      MessageDigest md) {
+    // create byte array from nonce
+    byte[] nonceBytes = ByteBuffer.allocate(Long.BYTES).putLong(nonce).array();
+
+    // update MessageDigest with byte arrays
+    md.update(numBytes);
+    md.update(dataBytes);
+    md.update(prevHashBytes);
+    md.update(nonceBytes);
+
+    // get hashed byte array
+    byte[] hashBytes = md.digest();
+
+    // create Hash from byte array and return this Hash
+    return new Hash(hashBytes);
+  }
 
 } // class Block
