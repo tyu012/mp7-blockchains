@@ -9,10 +9,17 @@ import java.util.Arrays;
  * @author Keely Miyamoto
  */
 public class Hash {
-  // Fields
+  // +--------+
+  // | Fields |
+  // +--------+-------------------------------------------------------------------------------------
+  /**
+   * The hashed data.
+   */
   byte[] data;
 
-  // Constructor
+  // +--------------+
+  // | Constructor |
+  // +-------------+--------------------------------------------------------------------------------
   /**
    * Hash(byte[] data): constructs a new Hash object 
    * that contains the given hash (as _data, an array of bytes).
@@ -22,7 +29,9 @@ public class Hash {
     this.data = _data;
   } // Hash(byte[] _data)
 
-  // Methods
+  // +----------+
+  // | Methods |
+  // +---------+----------------------------------------------------------------------------------
   /**
    * Method to get the hash contained in this object.
    * @return this.data
