@@ -1,3 +1,7 @@
+import java.nio.ByteBuffer;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 /**
  * An individual node of a blockchain. 
  * 
@@ -43,8 +47,37 @@ public class Block {
    * Creates a new block from the specified parameters, performing the mining operation to discover
    * the nonce and hash for this block given these parameters.
    */
-  public Block(int num, int amount, Hash prevHash) {
-    // STUB
+  public Block(int num, int amount, Hash prevHash) throws NoSuchAlgorithmException {
+    // Convert provided data into byte array
+    byte[] numBytes = ByteBuffer.allocate(Integer.BYTES).putInt(num).array();
+    byte[] dataBytes = ByteBuffer.allocate(Integer.BYTES).putInt(num).array();
+    byte[] prevHashBytes = prevHash.getData();
+
+    // Create instance of MessageDigest
+    MessageDigest md = MessageDigest.getInstance("sha-256");
+
+    // Mine for the block by looping through all possible long values
+    for (long nonceCandidate = Long.MIN_VALUE; nonceCandidate <= Long.MAX_VALUE; nonceCandidate++) {
+      // Convert nonce candidate into byte array
+      byte[] nonceCandidateBytes = ByteBuffer.allocate(Long.BYTES).putInt(num).array();
+
+      md.update(numBytes);
+      md.update(dataBytes);
+      md.update(prevHashBytes);
+      md.update(nonceCandidateBytes);
+
+      byte[] hashBytes = md.digest();
+
+      Hash hashCandidate = new Hash(hashBytes);
+
+      if (hashCandidate.isValid()) {
+        this.num = num;
+        this.data = amount;
+        this.prevHash = prevHash;
+        this.nonce = nonceCandidate;
+        this.hash = hashCandidate;
+      }
+    }
   }
 
   /**
