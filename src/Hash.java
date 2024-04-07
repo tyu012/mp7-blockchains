@@ -25,8 +25,8 @@ public class Hash {
    * that contains the given hash (as _data, an array of bytes).
    * @param _data
    */
-  public Hash(byte[] _data) {
-    this.data = _data;
+  public Hash(byte[] data) {
+    this.data = data;
   } // Hash(byte[] _data)
 
   // +----------+
