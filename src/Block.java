@@ -78,7 +78,16 @@ public class Block {
    * parameters to generate the hash for the block. Because the nonce is provided, this constructor
    * does not need to perform the mining operation; it can compute the hash directly.
    */
-  public Block(int num, int amount, Hash prevHash, long nonce) {
+  public Block(int num, int amount, Hash prevHash, long nonce) throws NoSuchAlgorithmException {
+    this.num = num;
+    this.data = amount;
+    this.prevHash = prevHash;
+    this.nonce = nonce;
+    this.hash = generateHash(ByteBuffer.allocate(Integer.BYTES).putInt(num).array(),
+        ByteBuffer.allocate(Integer.BYTES).putInt(amount).array(),
+        prevHash.getData(),
+        nonce,
+        MessageDigest.getInstance("sha-256"));
   } // Block(int, int, Hash, long)
 
   // +----------------+
