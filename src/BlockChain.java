@@ -80,7 +80,7 @@ public class BlockChain {
    */
   public void append(Block blk)  {
 
-    Node mover = arr;
+    Node mover = this.first;
 
     while (mover.next != null) {
       mover = mover.next;
@@ -92,8 +92,8 @@ public class BlockChain {
       throw new IllegalArgumentException(); 
     } // if
 
-    size++;
-    mover.next = new Node(blk, null);
+    // size++;
+    mover = mover.next;
   } // append(Block)
 
 
@@ -107,11 +107,12 @@ public class BlockChain {
       return false;
     } // if
 
-    Node mover = arr;
-    while (mover.next.next != null) {
+    Node mover = this.first;
+    while (!mover.next.equals(this.last)) {
       mover = mover.next;
     } // while
-    mover.next = null;
+    this.last = mover;
+    this.last.next = null;
     return true;
   } // removeLast()
 
@@ -121,12 +122,7 @@ public class BlockChain {
    * @return Hash
    */
   public Hash getHash()  {
-    Node mover = arr;
-
-    while (mover.next != null) {
-      mover = mover.next;
-    } // while
-    return mover.val.getHash();
+    return this.last.data.getHash();
   } // getHash()
 
 
@@ -136,9 +132,9 @@ public class BlockChain {
    * @return boolean
    */
   public boolean isValidBlockChain()  {
-    Node mover = arr;
+    Node mover = this.first;
     while (mover.next != null) {
-      if (!(mover.val.getPrevHash().equals(mover.next.val.getHash()))) {
+      if (!(mover.data.getPrevHash().equals(mover.next.data.getHash()))) {
         return true;
       } // if
       mover = mover.next;
@@ -153,13 +149,15 @@ public class BlockChain {
    * @param pen
    */
   public void printBalances(PrintWriter pen)  {
-    int balance = 0;
-    Node mover = arr;
+    int alexisBalance = this.first.data.getAmount();
+    int blakeBalance = 0;
+    Node mover = this.first.next;
 
     while (mover.next != null) {
-      balance += mover.val.getAmount();
+      alexisBalance += mover.data.getAmount();
+      blakeBalance -= mover.data.getAmount();
     } // while
-    pen.println("Alexis: " + balance + ", Blake" + balance*-1 + 300);
+    pen.println("Alexis: " + alexisBalance + ", Blake" + blakeBalance);
   } // printBalance(PrintWriter)
 
 
@@ -170,10 +168,13 @@ public class BlockChain {
    */
   public String toString() {
     String str = ""; 
-    Node mover = arr;
+    Node mover = this.first;
 
-    while (mover.next != null) {
-      str += ("Block " + mover.val.getNum() + "(Amount: " + mover.val.getAmount() + ", Nonce: " + mover.val.getNonce() + ", prevHash: " + mover.val.getPrevHash() + ", Hash: "  + mover.val.getHash() + ")\n");
+    while (mover != null) {
+      // Could also do: 
+      // str += mover.data.toString() + "\n";
+      str += ("Block " + mover.data.getNum() + "(Amount: " + mover.data.getAmount() + ", Nonce: " + mover.data.getNonce() + ", prevHash: " + mover.data.getPrevHash() + ", Hash: "  + mover.data.getHash() + ")\n");
+      mover = mover.next;
     } // while
     return str;
   } // toString()
