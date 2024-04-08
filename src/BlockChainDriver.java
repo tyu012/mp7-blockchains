@@ -153,7 +153,7 @@ public class BlockChainDriver {
 
     // Create new Block to add.
     try {
-      Block temp = new Block(blockChain.getSize(), transferred, blockChain.last.hash, nonce);
+      Block temp = new Block(blockChain.getSize(), transferred, blockChain.last.data.getHash(), nonce);
       blockChain.append(temp);
     } catch (Exception e) {
       PrintWriter redpen = new PrintWriter(System.err, true);
