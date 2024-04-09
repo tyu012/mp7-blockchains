@@ -53,8 +53,8 @@ public class BlockChainDriver {
     while (!command.equals("quit")) {
       // Print 'blockChain' and read in next command.
       pen.println(blockChain.toString());
-      pen.println("Command? ");
-      command = eyes.nextLine();
+      pen.printf("Command? ");
+      command = eyes.next();
 
       switch (command) {
 
@@ -67,16 +67,16 @@ public class BlockChainDriver {
           break;
         
         case "remove" :
-        blockChain.removeLast();
-        break;
+          blockChain.removeLast();
+          break;
 
         case "check" :
-        checkChain(pen, blockChain);
-        break;
+          checkChain(pen, blockChain);
+          break;
 
         case "report" :
-        blockChain.printBalances(pen);
-        break;
+          blockChain.printBalances(pen);
+          break;
 
         case "help" : 
           validCommands(pen);
@@ -88,7 +88,9 @@ public class BlockChainDriver {
         default :
           pen.println("Invalid command. Enter \"help\" to view valid commands.");
       } // switch
+      pen.println();
     } // while
+    eyes.close();
   } // main
 
 
@@ -117,16 +119,14 @@ public class BlockChainDriver {
    * @param blockChain
    */
   public static void mineHelper(PrintWriter pen, Scanner scanner, BlockChain blockChain) {
-    // Create string to store user input.
-    String input = "";
     // Request user input and store in 'input'.
     pen.printf("Amount transferred? ");
-    input = scanner.next();
+    int input = Integer.valueOf(scanner.next());
 
     // Create new Block to print nonce.
     try {
-      Block temp = blockChain.mine(Integer.parseInt(input));
-      pen.println("amount = " + input + ", nonce = " + temp.getNonce() + "\n");
+      Block temp = blockChain.mine(input);
+      pen.println("amount = " + input + ", nonce = " + temp.getNonce());
     } catch (Exception e) {
       PrintWriter redpen = new PrintWriter(System.err, true);
       redpen.println("Invalid number format.");
@@ -140,20 +140,16 @@ public class BlockChainDriver {
    * @param blockChain
    */
   public static void addBlock(PrintWriter pen, Scanner scanner, BlockChain blockChain) {
-    // Create string to store user input.
-    String input = "";
     // Request and store user input.
     pen.printf("Amount transferred? ");
-    input = scanner.next();
-    int transferred = Integer.parseInt(input);
+    int transfer = Integer.valueOf(scanner.next());
 
     pen.printf("Nonce? ");
-    input = scanner.next();
-    Long nonce = Long.parseLong(input);
+    long nonce = Long.valueOf(scanner.next());
 
     // Create new Block to add.
     try {
-      Block temp = new Block(blockChain.getSize(), transferred, blockChain.last.data.getHash(), nonce);
+      Block temp = new Block(blockChain.getSize(), transfer, blockChain.getHash(), nonce);
       blockChain.append(temp);
     } catch (Exception e) {
       PrintWriter redpen = new PrintWriter(System.err, true);
