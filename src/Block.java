@@ -51,7 +51,7 @@ public class Block {
     // Convert provided data into byte array
     byte[] numBytes = ByteBuffer.allocate(Integer.BYTES).putInt(num).array();
     byte[] dataBytes = ByteBuffer.allocate(Integer.BYTES).putInt(num).array();
-    byte[] prevHashBytes = prevHash.getData();
+    byte[] prevHashBytes = prevHash == null ? null : prevHash.getData();
 
     // Create instance of MessageDigest
     MessageDigest md = MessageDigest.getInstance("sha-256");
@@ -81,7 +81,7 @@ public class Block {
   public Block(int num, int amount, Hash prevHash, long nonce) throws NoSuchAlgorithmException {
     this.num = num;
     this.data = amount;
-    this.prevHash = prevHash;
+    this.prevHash = prevHash == null ? null : prevHash;
     this.nonce = nonce;
     this.hash = generateHash(ByteBuffer.allocate(Integer.BYTES).putInt(num).array(),
         ByteBuffer.allocate(Integer.BYTES).putInt(amount).array(),
@@ -144,6 +144,8 @@ public class Block {
   /**
    * Generates a hash from byte arrays of number, data, previous hash, and a long nonce
    * using a MessageDigest instance.
+   * 
+   * If prevHashBytes is null, skip call to update md with prevHashBytes.
    */
   static Hash generateHash(byte[] numBytes, byte[] dataBytes, byte[] prevHashBytes, long nonce,
       MessageDigest md) {
@@ -153,7 +155,9 @@ public class Block {
     // update MessageDigest with byte arrays
     md.update(numBytes);
     md.update(dataBytes);
-    md.update(prevHashBytes);
+    if (prevHashBytes != null) {
+      md.update(prevHashBytes);
+    }
     md.update(nonceBytes);
 
     // get hashed byte array
