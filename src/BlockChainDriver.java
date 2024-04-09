@@ -20,10 +20,12 @@ public class BlockChainDriver {
    * @param args - Enter Alexis' initial amount (must be > $0).
    */
   public static void main(String[] args) throws Exception {
-    // Create PrintWriter objects for error messages and for printing to terminal.
+    // Create PrintWriter objects for error messages ('redpen') 
+    // and for printing to terminal ('pen').
     PrintWriter redpen = new PrintWriter(System.err, true);
     PrintWriter pen = new PrintWriter(System.out, true);
-    // Create Scanner to read user input.
+    // Create Scanner to read user input
+    // and String to store most recent user command.
     Scanner eyes = new Scanner(System.in);
     String command = "";
 
@@ -37,6 +39,7 @@ public class BlockChainDriver {
     int initial = 0;
     try { 
       initial = Integer.parseInt(args[0]);
+      // Check if positive.
       if (initial < 0) {
         redpen.println("Please enter valid stating amount (> $0).");
         System.exit(1);
@@ -56,35 +59,44 @@ public class BlockChainDriver {
       pen.printf("Command? ");
       command = eyes.next();
 
+      // Switch actions depending on 'command':
       switch (command) {
 
+        // Mine new nonce, using helper function.
         case "mine" :
           mineHelper(pen, eyes, blockChain);
           break;
 
+        // Append new block to 'blockChain' using helper.
         case "append" :
           addBlock(pen, eyes, blockChain);
           break;
         
+        // Remove last block.
         case "remove" :
           blockChain.removeLast();
           break;
 
+        // Check if 'blockChain' is valid.
         case "check" :
           checkChain(pen, blockChain);
           break;
 
+        // Get report of Alexis' and Blake's balances.
         case "report" :
           blockChain.printBalances(pen);
           break;
 
+        // View menu of commands.
         case "help" : 
           validCommands(pen);
           break;
 
+        // Quit program.
         case "quit" :
           break;
-
+        
+        // Error message if invalid command is entered.
         default :
           pen.println("Invalid command. Enter \"help\" to view valid commands.");
       } // switch
@@ -119,7 +131,7 @@ public class BlockChainDriver {
    * @param blockChain
    */
   public static void mineHelper(PrintWriter pen, Scanner scanner, BlockChain blockChain) {
-    // Request user input and store in 'input'.
+    // Request user input for amount, convert String to Integer, and store in 'input'.
     pen.printf("Amount transferred? ");
     int input = Integer.valueOf(scanner.next());
 
@@ -129,8 +141,8 @@ public class BlockChainDriver {
       pen.println("amount = " + input + ", nonce = " + temp.getNonce());
     } catch (Exception e) {
       PrintWriter redpen = new PrintWriter(System.err, true);
-      redpen.println("Invalid number format.");
-    }
+      redpen.println("Error creating valid nonce. Please try again.");
+    } // try/catch
   } // mineHelper(PrintWriter, Scanner, BlockChain)
 
   /**
@@ -140,21 +152,22 @@ public class BlockChainDriver {
    * @param blockChain
    */
   public static void addBlock(PrintWriter pen, Scanner scanner, BlockChain blockChain) {
-    // Request and store user input.
+    // Request user input for amount transferred, convert String to Integer, and store in 'transfer'.
     pen.printf("Amount transferred? ");
     int transfer = Integer.valueOf(scanner.next());
 
+    // Request user input for nonce, convert String to Long, and store in 'nonce'.
     pen.printf("Nonce? ");
     long nonce = Long.valueOf(scanner.next());
 
-    // Create new Block to add.
+    // Create new Block to append to blockChain.
     try {
       Block temp = new Block(blockChain.getSize(), transfer, blockChain.getHash(), nonce);
       blockChain.append(temp);
     } catch (Exception e) {
       PrintWriter redpen = new PrintWriter(System.err, true);
-      redpen.println("Invalid block.");
-    }
+      redpen.println("Invalid block. Please try again.");
+    } // try/catch
   } // addBlock(PrintWriter, Scanner, BlockChain)
 
   /**
@@ -163,6 +176,7 @@ public class BlockChainDriver {
    * @param blockChain
    */
   public static void checkChain(PrintWriter pen, BlockChain blockChain) {
+    // Check if 'blockChain' is valid.
     if (blockChain.isValidBlockChain()) {
       pen.println("Chain is valid!");
     } else {
