@@ -1,5 +1,4 @@
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
@@ -13,7 +12,6 @@ import java.util.Random;
  * @author Nye Tenerelli
  * @author Tim Yu
  */
-
 public class BlockTests {
   /**
    * The number of blocks to mine in tests which mine arbitrary numbers of blocks.
@@ -37,20 +35,23 @@ public class BlockTests {
   }
 
   /**
-   * 
+   * Creates the same block using both constructors several times.
    */
   @Test
   public void makeIdenticalBlocksTest() throws Exception {
     int blockNum = rand.nextInt(RAND_MAX);
     int amount = rand.nextInt(RAND_MAX) - RAND_MAX / 2;
-    Block b1 = new Block(blockNum, amount, null);
-    Block b2 = new Block(blockNum, amount, null, b1.getNonce());
+    Block b0 = new Block(0, 0, null);
+    for (int i = 0; i < BLOCKS; i++) {
+      Block b1 = new Block(blockNum, amount, b0.getHash());
+      Block b2 = new Block(blockNum, amount, b0.getHash(), b1.getNonce());
 
-    assertEquals(b1.getNum(), b2.getNum());
-    assertEquals(b1.getAmount(), b2.getAmount());
-    assertEquals(b1.getPrevHash(), b2.getPrevHash());
-    assertEquals(b1.getNonce(), b2.getNonce());
-    assertTrue(b2.getHash().isValid());
+      assertEquals(b1.getNum(), b2.getNum());
+      assertEquals(b1.getAmount(), b2.getAmount());
+      assertEquals(b1.getPrevHash(), b2.getPrevHash());
+      assertEquals(b1.getNonce(), b2.getNonce());
+      assertTrue(b2.getHash().isValid());
+    }
   }
 
   /**
