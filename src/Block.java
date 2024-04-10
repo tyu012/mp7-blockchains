@@ -119,14 +119,14 @@ public class Block {
    * Returns the hash of the previous block in the blockchain.
    */
   public Hash getPrevHash() {
-    return this.prevHash;
+    return this.prevHash == null ? null : this.prevHash;
   } // getPrevHash()
 
   /**
    * Returns the hash of this block.
    */
   public Hash getHash() {
-    return this.hash;
+    return this.hash == null ? null : this.hash;
   } // getHash()
 
   /**
