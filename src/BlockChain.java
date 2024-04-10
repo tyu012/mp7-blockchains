@@ -77,23 +77,6 @@ public class BlockChain {
    * cannot be added to the chain (because it has an invalid hash, because its 
    * hash is inappropriate for the contents, or because the previous hash is incorrect).
    * @param blk
-   
-  public void append(Block blk)  {
-
-    Node mover = this.first;
-
-    while (mover.next != null) {
-      mover = mover.next;
-    } // while
-
-    if (blk.getHash().isValid() == false) {
-      throw new IllegalArgumentException(); 
-    } else if (!(blk.getPrevHash().equals(getHash()))) {
-      throw new IllegalArgumentException(); 
-    } // if
-
-    size++;
-  } // append(Block)
   */
   public void append(Block blk) throws IllegalArgumentException {
     // Check if hash is valid and appropriate to add to BlockChain after last Block in 'this'.
@@ -147,17 +130,6 @@ public class BlockChain {
    * Walks the BlockChain and ensures that its blocks are consistent 
    * (the balances are legal) and valid (as in append).
    * @return boolean
-
-  public boolean isValidBlockChain()  {
-    Node mover = this.first;
-    while (mover.next != null) {
-      if (!(mover.data.getPrevHash().equals(mover.next.data.getHash()))) {
-        return true;
-      } // if
-      mover = mover.next;
-    } // while
-    return true;
-  } // isValidBlockChain()
    */
   public boolean isValidBlockChain() {
     // Create Node at this.first.
