@@ -85,7 +85,7 @@ public class Block {
     this.nonce = nonce;
     this.hash = generateHash(ByteBuffer.allocate(Integer.BYTES).putInt(num).array(),
         ByteBuffer.allocate(Integer.BYTES).putInt(amount).array(),
-        prevHash.getData(),
+        prevHash == null ? null : prevHash.getData(),
         nonce,
         MessageDigest.getInstance("sha-256"));
   } // Block(int, int, Hash, long)
