@@ -77,7 +77,7 @@ public class BlockChain {
    * cannot be added to the chain (because it has an invalid hash, because its 
    * hash is inappropriate for the contents, or because the previous hash is incorrect).
    * @param blk
-   */
+   
   public void append(Block blk)  {
 
     Node mover = this.first;
@@ -92,10 +92,22 @@ public class BlockChain {
       throw new IllegalArgumentException(); 
     } // if
 
-    // size++;
-    mover = mover.next;
+    size++;
   } // append(Block)
-
+  */
+  public void append(Block blk) throws IllegalArgumentException {
+    // Check if hash is valid and appropriate to add to BlockChain after last Block in 'this'.
+    if ((blk.getHash().isValid()) && (blk.getPrevHash().equals(this.last.data.getHash()))) {
+      // Create 'temp' Node for new Block.
+      Node temp = new Node(blk);
+      // Position block after the last Block in 'this'
+      this.last.next = temp;
+      // Update this.last
+      this.last = temp;
+    } else {
+      throw new IllegalArgumentException();
+    } // if
+  } // append(Block)
 
   /**
    * Removes the last block from the chain, returning true. If the chain 
@@ -103,15 +115,20 @@ public class BlockChain {
    * @return boolean
    */
   public boolean removeLast() {
-    if (this.getSize() == 0) {
+    // If this contains one or fewer blocks, we cannot remove a block.
+    if (this.getSize() <= 1) {
       return false;
     } // if
 
+    // Create Node at this.first.
     Node mover = this.first;
+    // Progress mover to the second to last element of the BlockChain.
     while (!mover.next.equals(this.last)) {
       mover = mover.next;
     } // while
+    // Update this.last to mover.
     this.last = mover;
+    // Set original this.last to null.
     this.last.next = null;
     return true;
   } // removeLast()
@@ -130,7 +147,7 @@ public class BlockChain {
    * Walks the BlockChain and ensures that its blocks are consistent 
    * (the balances are legal) and valid (as in append).
    * @return boolean
-   */
+
   public boolean isValidBlockChain()  {
     Node mover = this.first;
     while (mover.next != null) {
@@ -141,7 +158,25 @@ public class BlockChain {
     } // while
     return true;
   } // isValidBlockChain()
-
+   */
+  public boolean isValidBlockChain() {
+    // Create Node at this.first.
+    Node mover = this.first;
+    // Initialize balance of all transactions.
+    int balance = 0;
+    // While mover is not at the end of the BlockChain.
+    while (mover != null) {
+      // Add amount transferred in current block to 'balance'.
+      balance += mover.data.getAmount();
+      // Check that current hash is valid, that balance is positive, and that balance does not exceed Alexis' initial.
+      if (!mover.data.getHash().isValid() || (balance < 0) || (balance > this.first.data.getAmount())) {
+        return false;
+      } // if
+      // Progress 'mover'.
+      mover = mover.next;
+    } // while
+    return true;
+  } // isValidBlockChain()
 
   /**
    * Prints Alexis’s and Blake’s respective balances in the form 
@@ -149,15 +184,21 @@ public class BlockChain {
    * @param pen
    */
   public void printBalances(PrintWriter pen)  {
+    // Initialize variables to track Alexis' and Blake's respective balances.
     int alexisBalance = this.first.data.getAmount();
     int blakeBalance = 0;
+    // Create node.
     Node mover = this.first.next;
 
-    while (mover.next != null) {
+    // While there is another node in the BlockChain.
+    while (mover != null) {
+      // Use node to update balances. Then progress mover.
       alexisBalance += mover.data.getAmount();
       blakeBalance -= mover.data.getAmount();
+      mover = mover.next;
     } // while
-    pen.println("Alexis: " + alexisBalance + ", Blake" + blakeBalance);
+    // Print balances.
+    pen.println("Alexis: " + alexisBalance + ", Blake: " + blakeBalance);
   } // printBalance(PrintWriter)
 
 
@@ -167,13 +208,16 @@ public class BlockChain {
    * @return String
    */
   public String toString() {
+    // Create string to be returned.
     String str = ""; 
+    // Create node at first Node of BlockChain.
     Node mover = this.first;
 
+    // While 'mover' is not at the end of the BlockChain...
     while (mover != null) {
-      // Could also do: 
-      // str += mover.data.toString() + "\n";
-      str += ("Block " + mover.data.getNum() + "(Amount: " + mover.data.getAmount() + ", Nonce: " + mover.data.getNonce() + ", prevHash: " + mover.data.getPrevHash() + ", Hash: "  + mover.data.getHash() + ")\n");
+      // Update 'str' with current Block.
+      str += ("Block " + mover.data.getNum() + " (Amount: " + mover.data.getAmount() + ", Nonce: " + mover.data.getNonce() + ", prevHash: " + mover.data.getPrevHash() + ", Hash: "  + mover.data.getHash() + ")\n");
+      // Progress 'mover'.
       mover = mover.next;
     } // while
     return str;
