@@ -18,3 +18,6 @@ https://docs.oracle.com/en/java/javase/17/docs/api/
 
 Mini-Project 7 instructions:
 https://rebelsky.cs.grinnell.edu/Courses/CSC207/2024Sp/mps/mp07.html
+
+Nested Static Classes:
+https://www.geeksforgeeks.org/static-class-in-java/
