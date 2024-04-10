@@ -2,7 +2,7 @@ import java.security.NoSuchAlgorithmException;
 import java.io.PrintWriter;
 
 /**
- * INSERT MESSAGE HERE
+ * A linked list of Block objects.
  * 
  * @author Tim Yu
  * @author Nye Tenerelli
