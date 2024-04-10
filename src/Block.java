@@ -50,7 +50,7 @@ public class Block {
   public Block(int num, int amount, Hash prevHash) throws NoSuchAlgorithmException {
     // Convert provided data into byte array
     byte[] numBytes = ByteBuffer.allocate(Integer.BYTES).putInt(num).array();
-    byte[] dataBytes = ByteBuffer.allocate(Integer.BYTES).putInt(num).array();
+    byte[] dataBytes = ByteBuffer.allocate(Integer.BYTES).putInt(amount).array();
     byte[] prevHashBytes = prevHash == null ? null : prevHash.getData();
 
     // Create instance of MessageDigest
